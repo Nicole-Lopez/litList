@@ -29,7 +29,7 @@ const server = new ApolloServer<MyContext>({
 await server.start();
 
 app.use(
-  '/',
+  '/books',
   cors<cors.CorsRequest>(),
   bodyParser.json({ limit: '50mb' }),
   expressMiddleware(server, {
