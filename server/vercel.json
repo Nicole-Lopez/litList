@@ -11,8 +11,5 @@
       "src": "/(.*)",
       "dest": "/"
     }
-  ],
-  "env": {
-    "APOLLO_SERVER_KEY": "your-apollo-server-key"
-  }
+  ]
 }
