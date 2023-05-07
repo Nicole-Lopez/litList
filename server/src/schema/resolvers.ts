@@ -7,10 +7,20 @@ interface Post {
   body: string
 }
 
-const getDataExample = async (id: string): Promise<Post> => {
-  const response: AxiosResponse<Post> = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+// const getDataExample = async (id: string): Promise<Post> => {
+//   const response: AxiosResponse<Post> = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
 
-  return response.data;  
+//   return response.data;  
+// }
+const getDataExample = (id: string): Post => {
+  let example = {
+    userId: 1,
+    id: 45,
+    title: 'hello',
+    body: 'world'
+  }
+
+  return example
 }
 
 
