@@ -11,16 +11,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-interface MyContext {
-  token?: String;
-}
-
 
 const app = express();
 const httpServer = http.createServer(app);
 
 
-const server = new ApolloServer<MyContext>({
+const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -33,9 +29,7 @@ app.use(
   '/graphql',
   cors<cors.CorsRequest>(),
   bodyParser.json({ limit: '50mb' }),
-  expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
-  }),
+  expressMiddleware(server),
 );
 
 
