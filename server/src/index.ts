@@ -1,62 +1,43 @@
-// import { ApolloServer } from '@apollo/server';
-// import { expressMiddleware } from '@apollo/server/express4';
-// import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-// import express from 'express';
-// import http from 'http';
-// import cors from 'cors';
-// import bodyParser from 'body-parser';
-// import { resolvers } from './schema/resolvers.js';
-// import { typeDefs } from './schema/typeDefs.js';
-// import dotenv from 'dotenv';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import express from 'express';
+import http from 'http';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { resolvers } from './schema/resolvers.js';
+import { typeDefs } from './schema/typeDefs.js';
+import dotenv from 'dotenv';
 
-// dotenv.config();
+dotenv.config();
 
-// interface MyContext {
-//   token?: String;
-// }
-
-
-// const app = express();
-// const httpServer = http.createServer(app);
+interface MyContext {
+  token?: String;
+}
 
 
-// const server = new ApolloServer<MyContext>({
-//   typeDefs,
-//   resolvers,
-//   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-//   introspection:true
-// });
-
-// await server.start();
-
-// app.use(
-//   '/graphql',
-//   cors<cors.CorsRequest>(),
-//   bodyParser.json({ limit: '50mb' }),
-//   expressMiddleware(server, {
-//     context: async ({ req }) => ({ token: req.headers.token }),
-//   }),
-// );
+const app = express();
+const httpServer = http.createServer(app);
 
 
-// await new Promise<void>((resolve) => httpServer.listen({ port: process.env.PORT }, resolve));
-// console.log(`Server ready at http://localhost:${process.env.PORT}`);
+const server = new ApolloServer<MyContext>({
+  typeDefs,
+  resolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  introspection:true
+});
+
+await server.start();
+
+app.use(
+  '/graphql',
+  cors<cors.CorsRequest>(),
+  bodyParser.json({ limit: '50mb' }),
+  expressMiddleware(server, {
+    context: async ({ req }) => ({ token: req.headers.token }),
+  }),
+);
 
 
-import express, { Request, Response } from 'express'
-
-const app = express()
-const port = process.env.PORT || 3001
-
-app.get('/', (_req: Request, res: Response) => {
-    return res.send('Express Typescript on Vercel')
-})
-
-app.get('/ping', (_req: Request, res: Response) => {
-    return res.send('pong 🏓')
-})
-
-app.listen(port, () => {
-    return console.log(`Server is listening on ${port}`)
-})
-
+await new Promise<void>((resolve) => httpServer.listen({ port: process.env.PORT }, resolve));
+console.log(`Server ready at http://localhost:${process.env.PORT}`);
